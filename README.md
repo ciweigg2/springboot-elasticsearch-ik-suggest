@@ -45,6 +45,15 @@ Springboot2.1.1+elasticsearch6.5.3搭建的企业级搜索平台，支持PB级�
 1. 数据库数据同步，可自行安装插件。
 2. 如需mq、接口方式同步数据，请查看项目中的save接口模块。
 
+#### 建议搜索
 此版本修改过一些逻辑，添加了建议搜索
+```java
+http://localhost:8080/suggest?keyword=无印良品
+response:
+[
+    "无印良品 MUJI 基础润肤化妆水",
+    "无印良品水"
+]
+```
 
 源码地址：https://gitee.com/11230595/springboot-elasticsearch

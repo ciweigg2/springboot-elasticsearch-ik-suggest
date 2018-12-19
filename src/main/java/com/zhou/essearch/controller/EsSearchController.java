@@ -145,13 +145,19 @@ public class EsSearchController {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    /**
+     * 根据前缀关联搜索所有匹配前缀的词语(搜索国民 可能会关联出国民小妹妹 国民美少女)
+     *
+     * @param keyword
+     * @return
+     */
     @RequestMapping("suggest")
     public List<String> getSuggestSearch(@RequestParam String keyword) {
         //field的名字,前缀(输入的text),以及大小size
         CompletionSuggestionBuilder suggestionBuilderDistrict = SuggestBuilders.completionSuggestion("productName.suggest")
                 .prefix(keyword).size(100);
         SuggestBuilder suggestBuilder = new SuggestBuilder();
-        suggestBuilder.addSuggestion("my-suggest", suggestionBuilderDistrict);//添加suggest
+        suggestBuilder.addSuggestion("my-suggest", suggestionBuilderDistrict);//添加suggest my-suggest自定义的随便取的
         //设置查询builder的index,type,以及建议
         SearchRequestBuilder requestBuilder = client.prepareSearch("orders").setTypes("product").suggest(suggestBuilder);
         System.out.println(requestBuilder.toString());
@@ -183,25 +189,8 @@ public class EsSearchController {
                 }
             }
         }
-
         List<String> suggests = Arrays.asList(suggestSet.toArray(new String[]{}));
-
         return suggests;
-        //构造搜索建议语句
-//        SuggestionBuilder completionSuggestionFuzzyBuilder = SuggestBuilders.completionSuggestion("title.suggest").prefix(keyword, Fuzziness.AUTO);
-//
-//        //根据
-//        final SearchResponse suggestResponse = elasticsearchTemplate.suggest(new SuggestBuilder().addSuggestion("my-suggest",completionSuggestionFuzzyBuilder), ProductDocument.class);
-//        CompletionSuggestion completionSuggestion = suggestResponse.getSuggest().getSuggestion("my-suggest");
-//        List<CompletionSuggestion.Entry.Option> options = completionSuggestion.getEntries().get(0).getOptions();
-//        System.err.println(options);
-//        System.out.println(options.size());
-//        System.out.println(options.get(0).getText().string());
-//
-//        List<String> suggestList = new ArrayList<>();
-//        options.forEach(item ->{ suggestList.add(item.getText().toString()); });
-//        System.out.println(suggestList.toArray(new String[suggestList.size()]));
-//        return null;
     }
 
 }
