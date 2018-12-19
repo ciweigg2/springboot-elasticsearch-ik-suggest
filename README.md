@@ -46,7 +46,7 @@ Springboot2.1.1+elasticsearch6.5.3搭建的企业级搜索平台，支持PB级�
 2. 如需mq、接口方式同步数据，请查看项目中的save接口模块。
 
 #### 建议搜索
-此版本修改过一些逻辑，添加了建议搜索
+此版本修改过一些逻辑，添加了建议搜索 https://github.com/ciweigg2/springboot-elasticsearch-ik-suggest
 ```java
 http://localhost:8080/suggest?keyword=无印良品
 response:
