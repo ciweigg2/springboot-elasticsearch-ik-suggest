@@ -37,9 +37,9 @@ Springboot2.1.1+elasticsearch6.5.3搭建的企业级搜索平台，支持PB级�
 
 #### 五、搜索接口返回数据截图
 - 分页搜索接口 <br>
-![image](https://images.gitee.com/uploads/images/2018/1218/110942_55dcc26e_499215.png) <br>
+![image](images/1.png) <br>
 - 普通搜索接口 <br>
-![image](https://images.gitee.com/uploads/images/2018/1214/223726_f913dbf0_499215.png)
+![image](images/2.png)
 
 #### 六、补充
 1. 数据库数据同步，可自行安装插件。
