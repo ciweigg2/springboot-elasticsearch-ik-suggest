@@ -16,7 +16,8 @@ import java.util.Date;
  */
 @Document(indexName = "orders", type = "product")
 @Mapping(mappingPath = "productIndex.json") // 解决IK分词不能使用问题
-//@Mapping(mappingPath = "productIndex-suggest.json") //suggest建议搜索映射文件的
+//@Mapping(mappingPath = "productIndex-suggest.json") //suggest建议搜索映射文件的 这样配置支持ik和建议搜索 使用SuggestBuilders.completionSuggestion("productName.suggest")
+//@Mapping(mappingPath = "productIndex-suggest.json2") //suggest建议搜索映射文件的 这样配置只支持建议搜索 使用SuggestBuilders.completionSuggestion("productName")
 public class ProductDocument implements Serializable {
 
     @Id
