@@ -3,6 +3,9 @@ package com.zhou.essearch.controller;
 import com.zhou.essearch.document.ProductDocument;
 import com.zhou.essearch.page.Page;
 import com.zhou.essearch.service.EsSearchService;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -146,6 +149,27 @@ public class EsSearchController {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     /**
+     * 建议搜索1
+     * 先将keyword词语分词 然后用分词后的数据去匹配所有前缀为当前分词的数据
+     *
+     * @param keyword
+     * @return
+     */
+    @RequestMapping("suggestIk")
+    public List<String> getSuggestSearchIk(@RequestParam String keyword) {
+        List responseSuggests = new ArrayList();
+        //分词
+        List<String> list = getAnalyzes("orders" ,keyword);
+        list.forEach(kewords->{
+            //查询建议词
+            List<String> suggestKeyword = suggest(kewords);
+            responseSuggests.addAll(suggestKeyword);
+        });
+        return responseSuggests;
+    }
+
+    /**
+     * 建议搜索2
      * 根据前缀关联搜索所有匹配前缀的词语(搜索国民 可能会关联出国民小妹妹 国民美少女)
      *
      * @param keyword
@@ -153,6 +177,50 @@ public class EsSearchController {
      */
     @RequestMapping("suggest")
     public List<String> getSuggestSearch(@RequestParam String keyword) {
+        List<String> suggestKeyword = suggest(keyword);
+        return suggestKeyword;
+    }
+
+    /**
+     * 查看分词数据
+     *
+     * @param ikKeyword 分词数据
+     * @return
+     */
+    @RequestMapping("ik")
+    public List<String> getSuggestSearch(@RequestParam String index ,@RequestParam String ikKeyword) {
+        return getAnalyzes(index ,ikKeyword);
+    }
+
+    /**
+     * 将文本分词后的数据 默认使用中文ik_max_word分词
+     *
+     * @param index 索引index
+     * @param text 需要被分析的词语
+     * @return
+     */
+    public List<String> getAnalyzes(String index,String text){
+        //调用ES客户端分词器进行分词
+        AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(elasticsearchTemplate.getClient(),
+                AnalyzeAction.INSTANCE,index,text).setAnalyzer("ik_max_word");
+        List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
+
+        // 赋值
+        List<String> searchTermList = new ArrayList<>();
+        ikTokenList.forEach(ikToken -> {
+            searchTermList.add(ikToken.getTerm());
+        });
+
+        return searchTermList;
+    }
+
+    /**
+     * 根据前缀关联搜索所有匹配前缀的词语(搜索国民 可能会关联出国民小妹妹 国民美少女)
+     *
+     * @param keyword
+     * @return
+     */
+    public List<String> suggest(String keyword){
         //field的名字,前缀(输入的text),以及大小size
         CompletionSuggestionBuilder suggestionBuilderDistrict = SuggestBuilders.completionSuggestion("productName.suggest")
                 .prefix(keyword).size(100);

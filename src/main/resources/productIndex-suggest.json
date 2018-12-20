@@ -10,7 +10,8 @@
       "fields": {
         "suggest": {
           "type": "completion",
-          "analyzer": "ik_max_word"
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
         }
       }
     },
@@ -21,7 +22,8 @@
       "fields": {
         "suggest": {
           "type": "completion",
-          "analyzer": "ik_max_word"
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
         }
       }
     },
