@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * 产品实体
- * @author zhoudong
+ * @author ciwei
  * @version 0.1
  * @date 2018/12/13 15:22
  */

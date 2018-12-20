@@ -2,7 +2,7 @@ package com.zhou.essearch.page;
 
 /**
  * 分页实体
- * @author zhoudong
+ * @author ciwei
  *
  */
 public interface Paginable {

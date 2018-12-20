@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * elasticsearch 搜索引擎
- * @author zhoudong
+ * @author ciwei
  * @version 0.1
  * @date 2018/12/13 15:33
  */
@@ -49,7 +49,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
 
     /**
      * 高亮显示
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/13 21:22
      */
     @Override
@@ -74,7 +74,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
     }
     /**
      * 高亮显示，返回分页
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/18 10:29
      */
     @Override
@@ -105,7 +105,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
 
     /**
      * 构造查询条件
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/18 10:42
      */
     private QueryBuilder createQueryBuilder(String keyword, String... fieldNames){
@@ -116,7 +116,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
     }
     /**
      * 构造高亮器
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/18 10:44
      */
     private HighlightBuilder createHighlightBuilder(String... fieldNames){
@@ -134,7 +134,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
 
     /**
      * 处理高亮结果
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/18 10:48
      */
     private List<Map<String,Object>> getHitList(SearchHits hits){

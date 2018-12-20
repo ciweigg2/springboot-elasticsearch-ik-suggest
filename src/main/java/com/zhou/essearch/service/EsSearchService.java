@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author zhoudong
+ * @author ciwei
  * @version 0.1
  * @date 2018/12/13 15:32
  */
 public interface EsSearchService extends BaseSearchService<ProductDocument> {
     /**
      * 保存
-     * @auther: zhoudong
+     * @auther: ciwei
      * @date: 2018/12/13 16:02
      */
     void save(ProductDocument... productDocuments);
