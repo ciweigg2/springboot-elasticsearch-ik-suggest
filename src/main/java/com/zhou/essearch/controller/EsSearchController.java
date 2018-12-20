@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * elasticsearch 搜索
@@ -34,10 +35,15 @@ import java.util.*;
  */
 @RestController
 public class EsSearchController {
-    private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Resource
+    @Autowired
     private EsSearchService esSearchService;
+
+    @Autowired
+    private Client client;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
 
     /**
      * 新增 / 修改索引
@@ -142,12 +148,6 @@ public class EsSearchController {
         return "success";
     }
 
-    @Autowired
-    private Client client;
-
-    @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
-
     /**
      * 建议搜索1
      * 先将keyword词语分词 然后用分词后的数据去匹配所有前缀为当前分词的数据
@@ -157,7 +157,7 @@ public class EsSearchController {
      */
     @RequestMapping("suggestIk")
     public List<String> getSuggestSearchIk(@RequestParam String keyword) {
-        List responseSuggests = new ArrayList();
+        List<String> responseSuggests = new ArrayList();
         //分词
         List<String> list = getAnalyzes("orders" ,keyword);
         list.forEach(kewords->{
@@ -165,7 +165,9 @@ public class EsSearchController {
             List<String> suggestKeyword = suggest(kewords);
             responseSuggests.addAll(suggestKeyword);
         });
-        return responseSuggests;
+        //去重
+        List<String> distinctSearchTermList = responseSuggests.stream().distinct().collect(Collectors.toList());
+        return distinctSearchTermList;
     }
 
     /**
