@@ -111,7 +111,7 @@ public class BaseSearchServiceImpl<T> implements BaseSearchService<T> {
     private QueryBuilder createQueryBuilder(String keyword, String... fieldNames){
         // 构造查询条件,使用标准分词器.
         return QueryBuilders.multiMatchQuery(keyword,fieldNames)   // matchQuery(),单字段搜索
-                .analyzer("ik_max_word")
+//                .analyzer("ik_max_word")
                 .operator(Operator.OR);
     }
     /**
